@@ -109,33 +109,33 @@ export default function SimulatorForm() {
   const calculateInterest = (): void => {
     if (!validateForm()) return;
 
-    const P = parseFloat(formData.montoInicial.replace(/,/g, "")); // Monto inicial
-    const A = parseFloat(formData.aporteMensual.replace(/,/g, "")); // Aporte mensual
-    const n = parseInt(formData.meses); // Número de meses
+    const montoInicial = parseFloat(formData.montoInicial.replace(/,/g, "")); // Monto inicial
+    const aporteMensual = parseFloat(formData.aporteMensual.replace(/,/g, "")); // Aporte mensual
+    const numeroMeses = parseInt(formData.meses); // Número de meses
     const tasaAnual = parseFloat(formData.tasaInteres) / 100; // Tasa anual en decimal
     const r = tasaAnual / 12; // Tasa mensual
 
     // Desglose mensual
     const desgloseMensual: SimulationResult["desgloseMensual"] = [];
-    let saldoActual = P;
+    let saldoActual = montoInicial;
 
-    for (let mes = 1; mes <= n; mes++) {
+    for (let mes = 1; mes <= numeroMeses; mes++) {
       // Calcular interés del mes sobre el saldo actual
       const interesesMes = saldoActual * r;
 
       // Sumar interés y aporte al saldo
-      saldoActual = saldoActual + interesesMes + A;
+      saldoActual = saldoActual + interesesMes + aporteMensual;
 
       desgloseMensual.push({
         mes,
         saldo: saldoActual,
         interesesMes,
-        aporteMes: A,
+        aporteMes: aporteMensual,
       });
     }
 
     const montoTotal = saldoActual;
-    const totalInvertido = P + A * n;
+    const totalInvertido = montoInicial+ aporteMensual * numeroMeses;
     const interesesGenerados = montoTotal - totalInvertido;
 
     setResult({
@@ -310,7 +310,7 @@ export default function SimulatorForm() {
               onClick={handleReset}
               className="px-6 py-3 border border-gray-300 rounded-lg font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
             >
-              Limpiar
+              Limpiar data
             </button>
           </div>
         </form>
@@ -328,7 +328,7 @@ export default function SimulatorForm() {
 
               <div className="space-y-4">
                 {/* Monto Total */}
-                <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-6">
+                <div className="bg-linear-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-6">
                   <p className="text-sm text-gray-600 mb-1">Monto Total Final</p>
                   <p className="text-4xl font-bold text-green-600">
                     {formatCurrency(result.montoTotal)}
@@ -404,7 +404,7 @@ export default function SimulatorForm() {
               </svg>
               <p className="text-lg font-medium">Completa el formulario</p>
               <p className="text-sm mt-2">
-                Ingresa los datos para calcular tu rentabilidad
+                Ingresa los datos para calcular  rentabilidad
               </p>
             </div>
           </div>
