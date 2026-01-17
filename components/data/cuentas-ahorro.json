@@ -1,0 +1,92 @@
+{
+  "accounts": [
+    {
+      "id": "SA001",
+      "accountNumber": "4001-2345-6789",
+      "holderName": "María García López",
+      "balance": 15750.50,
+      "interestRate": 3.5,
+      "openDate": "2023-01-15",
+      "accountType": "Cuenta de Ahorro Premium",
+      "status": "active",
+      "currency": "COP"
+    },
+    {
+      "id": "SA002",
+      "accountNumber": "4001-9876-5432",
+      "holderName": "Carlos Rodríguez Pérez",
+      "balance": 8920.00,
+      "interestRate": 2.8,
+      "openDate": "2023-03-22",
+      "accountType": "Cuenta de Ahorro Básica",
+      "status": "active",
+      "currency": "COP"
+    },
+    {
+      "id": "SA003",
+      "accountNumber": "4001-1111-2222",
+      "holderName": "Ana Martínez Silva",
+      "balance": 45230.75,
+      "interestRate": 4.2,
+      "openDate": "2022-11-08",
+      "accountType": "Cuenta de Ahorro VIP",
+      "status": "active",
+      "currency": "COP"
+    },
+    {
+      "id": "SA004",
+      "accountNumber": "4001-3333-4444",
+      "holderName": "Luis Fernando Gómez",
+      "balance": 2150.25,
+      "interestRate": 2.5,
+      "openDate": "2024-01-10",
+      "accountType": "Cuenta de Ahorro Básica",
+      "status": "active",
+      "currency": "COP"
+    },
+    {
+      "id": "SA005",
+      "accountNumber": "4001-5555-6666",
+      "holderName": "Patricia Hernández Cruz",
+      "balance": 0.00,
+      "interestRate": 2.8,
+      "openDate": "2023-09-05",
+      "accountType": "Cuenta de Ahorro Básica",
+      "status": "inactive",
+      "currency": "COP"
+    },
+    {
+      "id": "SA006",
+      "accountNumber": "4001-7777-8888",
+      "holderName": "Jorge Alberto Díaz",
+      "balance": 92340.80,
+      "interestRate": 4.5,
+      "openDate": "2021-06-12",
+      "accountType": "Cuenta de Ahorro VIP",
+      "status": "active",
+      "currency": "COP"
+    },
+    {
+      "id": "SA007",
+      "accountNumber": "4001-9999-0000",
+      "holderName": "Sandra Milena Torres",
+      "balance": 5670.30,
+      "interestRate": 3.0,
+      "openDate": "2023-07-19",
+      "accountType": "Cuenta de Ahorro Premium",
+      "status": "active",
+      "currency": "COP"
+    },
+    {
+      "id": "SA008",
+      "accountNumber": "4001-2468-1357",
+      "holderName": "Ricardo Andrés Morales",
+      "balance": 18900.00,
+      "interestRate": 3.5,
+      "openDate": "2023-02-28",
+      "accountType": "Cuenta de Ahorro Premium",
+      "status": "active",
+      "currency": "COP"
+    }
+  ]
+}
