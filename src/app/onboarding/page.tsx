@@ -117,9 +117,7 @@ export default function OnboardingPage() {
     const recaptchaToken = simularRecaptcha();
 
     try {
-      // Simular envío al servidor
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
+      
       // Validar token de reCAPTCHA
       if (!validarRecaptchaToken(recaptchaToken)) {
         setErrors({

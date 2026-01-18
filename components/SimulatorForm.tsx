@@ -209,7 +209,7 @@ export default function SimulatorForm() {
               value={formData.montoInicial}
               onChange={(e) => handleInputChange("montoInicial", e.target.value)}
               placeholder="Ej: 1,000,000"
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black ${
                 errors.montoInicial ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -232,7 +232,7 @@ export default function SimulatorForm() {
               value={formData.aporteMensual}
               onChange={(e) => handleInputChange("aporteMensual", e.target.value)}
               placeholder="Ej: 100,000"
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black ${
                 errors.aporteMensual ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -257,7 +257,7 @@ export default function SimulatorForm() {
               placeholder="Ej: 12"
               min="1"
               max="600"
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black ${
                 errors.meses ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -288,7 +288,7 @@ export default function SimulatorForm() {
               step="0.1"
               min="0"
               max="50"
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black ${
                 errors.tasaInteres ? "border-red-500" : "border-gray-300"
               }`}
             />
