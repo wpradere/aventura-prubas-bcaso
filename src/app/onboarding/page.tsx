@@ -32,14 +32,12 @@ export default function OnboardingPage() {
 
   // Simular verificación de reCAPTCHA
   const simularRecaptcha = (): string => {
-    // Simula aleatoriamente si el reCAPTCHA es exitoso o no
-    // 70% de probabilidad de éxito (devuelve "OK")
-    // 30% de probabilidad de fallo
+  
     const isSuccess = Math.random() > 0.3;
     return isSuccess ? "OK" : "ERROR";
   };
 
-  // Validar token de reCAPTCHA
+
   const validarRecaptchaToken = (token: string): boolean => {
     return token === "OK";
   };

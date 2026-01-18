@@ -28,8 +28,9 @@ export default async function CuentasAhorroPage({
 }: {
   searchParams: Promise<{ search?: string; tipo?: string }>;
 }) {
-  const params = await searchParams;
-  await new Promise((resolve) => setTimeout(resolve, 100));
+
+  //const { search, tipo } = await searchParams;
+  const params = await searchParams;  
   const todasCuentas = cuentasAhorro.accounts as CuentasAhorros[];
 
   let accounts = todasCuentas;
@@ -51,6 +52,8 @@ export default async function CuentasAhorroPage({
   const renderTime = new Date().toLocaleString("es-CO");
 
   const totalBalance = todasCuentas.reduce((sum, acc) => sum + acc.balance, 0);
+  
+  
   const activeAccounts = todasCuentas.filter(
     (acc) => acc.status === "active",
   ).length;
@@ -65,8 +68,7 @@ export default async function CuentasAhorroPage({
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Encabezado */}
+      <div className="max-w-7xl mx-auto">        
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
             Cuentas de Ahorro
@@ -119,7 +121,9 @@ export default async function CuentasAhorroPage({
 
         {accounts.length === 0 ? (
           <div className="bg-white rounded-lg shadow p-8 text-center">
-            <p className="text-gray-500 text-lg">No se encontraron cuentas con los filtros aplicados</p>
+            <p className="text-gray-500 text-lg">
+              No se encontraron cuentas con los filtros aplicados
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -127,21 +131,7 @@ export default async function CuentasAhorroPage({
               <AccountCard key={cuenta.id} cuentas={cuenta} />
             ))}
           </div>
-        )}
-
-        {/* Información SSR */}
-        <div className="mt-8 bg-green-50 border border-green-200 rounded-lg p-4">
-          <p className="text-sm text-green-800">
-            <strong>✅ SSR Activo:</strong> Esta página se renderizó en el
-            servidor.
-            <br />
-            <strong>Hora de renderizado:</strong> {renderTime}
-          </p>
-          <p className="text-xs text-green-700 mt-2">
-            Recarga la página y verás que la hora cambia (se renderiza de nuevo
-            en el servidor)
-          </p>
-        </div>
+        )}  
       </div>
     </div>
   );
