@@ -1,16 +1,31 @@
-# 🏦 Sistema de Gestión de Cuentas de Ahorro
+# 🏦 Sistema de Gestión Bancaria
 
-Proyecto de demostración de Next.js 15 con App Router que implementa un sistema de consulta y gestión de cuentas de ahorro con renderizado del lado del servidor (SSR).
+Proyecto de demostración de Next.js 15 con App Router que implementa un sistema bancario completo con múltiples módulos: gestión de cuentas de ahorro, simulador de rentabilidad y registro de clientes.
 
 ## 📋 Descripción del Proyecto
 
-Este proyecto es una aplicación web que permite visualizar, filtrar y gestionar cuentas de ahorro bancarias. Incluye funcionalidades como:
+Este proyecto es una aplicación web bancaria que incluye los siguientes módulos:
 
+### 📊 Módulo Products (Cuentas de Ahorro)
 - **Dashboard principal** con estadísticas agregadas (saldo total, cuentas activas, tasa promedio)
 - **Listado de cuentas** con información detallada de cada cuenta
 - **Sistema de filtros avanzado** con búsqueda en tiempo real y debounce
 - **Filtrado por nombre/número de cuenta** y por tipo de cuenta
 - **Renderizado del lado del servidor (SSR)** para mejor SEO y performance inicial
+
+### 💰 Módulo Simulator (Simulador de Rentabilidad)
+- **Calculadora de interés compuesto** con aportes mensuales
+- **Validación completa** de montos, plazos y tasas de interés
+- **Desglose mensual** detallado mostrando evolución del ahorro
+- **Resultados en tiempo real**: monto final, total invertido e intereses generados
+- **Fórmula de interés compuesto**: VF = P × (1 + r)^n + A × [((1 + r)^n - 1) / r]
+
+### 📝 Módulo Onboarding (Registro de Intención)
+- **Formulario de registro** para nuevos clientes
+- **Validación de campos**: nombre, documento y correo electrónico
+- **Simulación de reCAPTCHA** para protección contra bots
+- **Generación de UUID** como código de solicitud único
+- **Estados de formulario**: cargando, éxito y errores
 
 ## 🎯 ¿Por qué estamos usando SSR?
 
@@ -50,11 +65,31 @@ Este proyecto utiliza **Server-Side Rendering (SSR)** como método de renderizad
 ## 🏗️ Arquitectura
 
 ```
-/src/app/products/page.tsx          → Server Component (SSR)
-/components/FilterSection.tsx       → Client Component (Interactividad)
-/components/AcoountCard.tsx         → Presentacional
-/components/data/cuentas-ahorro.json → Datos mock
+src/app/
+├── page.tsx                        → Home (página principal)
+├── products/page.tsx               → Server Component (SSR) - Cuentas de Ahorro
+├── simulator/page.tsx              → Simulador de Rentabilidad
+└── onboarding/page.tsx             → Client Component - Registro de Intención
+
+components/
+├── FilterSection.tsx               → Client Component (Filtros con debounce)
+├── AcoountCard.tsx                 → Presentacional (Tarjeta de cuenta)
+├── SimulatorForm.tsx               → Client Component (Formulario de simulación)
+├── nav.tsx                         → Navegación principal
+└── data/
+    └── cuentas-ahorro.json         → Datos mock de cuentas
 ```
+
+## 🧭 Navegación
+
+La aplicación cuenta con una barra de navegación sticky que permite acceder a:
+
+| Ruta | Módulo | Descripción |
+|------|--------|-------------|
+| `/` | Home | Página principal |
+| `/products` | Products | Gestión de cuentas de ahorro |
+| `/simulator` | Simulador | Calculadora de rentabilidad |
+| `/onboarding` | Onboarding | Registro de intención de apertura |
 
 ## 🚀 Getting Started
 
