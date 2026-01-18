@@ -29,7 +29,7 @@ export default function OnboardingPage() {
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
   // Simular verificación de reCAPTCHA
-  const simulaRecaptcha = (): string => {
+  const simularRecaptcha = (): string => {
     // Genera un token simulado de reCAPTCHA
     const timestamp = Date.now();
     const randomToken = Math.random().toString(36).substring(2, 15);
@@ -86,22 +86,27 @@ export default function OnboardingPage() {
   };
 
   // Enviar formulario
-  const manejoSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validacionForm()) return;
 
     setIsSubmitting(true);
 
-    
+    // Simular token de reCAPTCHA
+    const recaptchaToken = simularRecaptcha();
 
-
+    // Actualizar formData con el token
+    const dataToSubmit = {
+      ...formData,
+      recaptcha: recaptchaToken,
+    };
 
     try {
       // Simular envío al servidor
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
-     
+      console.log("Datos enviados:", dataToSubmit);
 
       // Mostrar éxito
       setSubmitSuccess(true);
@@ -137,7 +142,7 @@ export default function OnboardingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
@@ -183,7 +188,7 @@ export default function OnboardingPage() {
               </button>
             </div>
           ) : (
-            <form onSubmit={manejoSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               {/* Nombre */}
               <div>
                 <label
@@ -254,9 +259,46 @@ export default function OnboardingPage() {
                 {errors.correo && (
                   <p className="mt-1 text-sm text-red-600">{errors.correo}</p>
                 )}
-              </div>        
+              </div>
 
-              
+              {/* reCAPTCHA simulado (campo oculto) */}
+              <input
+                type="hidden"
+                name="recaptcha"
+                value={formData.recaptcha}
+              />
+
+              {/* Indicador visual de reCAPTCHA */}
+              <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                <div className="flex items-center space-x-3">
+                  <div className="shrink-0">
+                    <div className="h-6 w-6 border-2 border-gray-300 rounded bg-white flex items-center justify-center">
+                      <svg
+                        className="h-4 w-4 text-green-600"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm text-gray-700">No soy un robot</p>
+                  </div>
+                  <div className="shrink-0">
+                    <div className="text-xs text-gray-400">
+                      <div>reCAPTCHA</div>
+                      <div className="text-right">simulado</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               {/* Botones */}
               <div className="flex gap-4">
@@ -309,7 +351,7 @@ export default function OnboardingPage() {
               </p>
             </form>
           )}
-        </div>        
+        </div>    
       </div>
     </div>
   );
