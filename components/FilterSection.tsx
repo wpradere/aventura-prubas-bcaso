@@ -87,7 +87,7 @@ export default function FilterSection({
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               placeholder="Ej: Juan Pérez o 1001..."
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black"
             />
             {isPending && (
               <div className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -109,7 +109,7 @@ export default function FilterSection({
             id="tipo"
             value={tipoFilter}
             onChange={(e) => setTipoFilter(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-black"
           >
             <option value="todos">Todos los tipos</option>
             {accountTypes.map((type) => (

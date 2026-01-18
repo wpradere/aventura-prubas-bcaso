@@ -27,13 +27,30 @@ export default function OnboardingPage() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [codigoSolicitud, setCodigoSolicitud] = useState<string>("");
+  const [recaptchaChecked, setRecaptchaChecked] = useState(false);
 
   // Simular verificación de reCAPTCHA
   const simularRecaptcha = (): string => {
-    // Genera un token simulado de reCAPTCHA
-    const timestamp = Date.now();
-    const randomToken = Math.random().toString(36).substring(2, 15);
-    return `recaptcha_token_${timestamp}_${randomToken}`;
+    // Simula aleatoriamente si el reCAPTCHA es exitoso o no
+    // 70% de probabilidad de éxito (devuelve "OK")
+    // 30% de probabilidad de fallo
+    const isSuccess = Math.random() > 0.3;
+    return isSuccess ? "OK" : "ERROR";
+  };
+
+  // Validar token de reCAPTCHA
+  const validarRecaptchaToken = (token: string): boolean => {
+    return token === "OK";
+  };
+
+  // Generar UUID simulado
+  const generarUUID = (): string => {
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+      const r = (Math.random() * 16) | 0;
+      const v = c === "x" ? r : (r & 0x3) | 0x8;
+      return v.toString(16);
+    });
   };
 
   // Validar formulario
@@ -63,6 +80,11 @@ export default function OnboardingPage() {
       newErrors.correo = "El correo es requerido";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.correo)) {
       newErrors.correo = "Ingresa un correo válido";
+    }
+
+    // Validar reCAPTCHA
+    if (!recaptchaChecked) {
+      newErrors.recaptcha = "Debes confirmar que no eres un robot";
     }
 
     setErrors(newErrors);
@@ -96,31 +118,34 @@ export default function OnboardingPage() {
     // Simular token de reCAPTCHA
     const recaptchaToken = simularRecaptcha();
 
-    // Actualizar formData con el token
-    const dataToSubmit = {
-      ...formData,
-      recaptcha: recaptchaToken,
-    };
-
     try {
       // Simular envío al servidor
       await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      // Validar token de reCAPTCHA
+      if (!validarRecaptchaToken(recaptchaToken)) {
+        setErrors({
+          recaptcha: "Error de verificación reCAPTCHA. Por favor, intenta nuevamente.",
+        });
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Generar código de solicitud UUID
+      const uuid = generarUUID();
+      setCodigoSolicitud(uuid);
+
+      // Actualizar formData con el token
+      const dataToSubmit = {
+        ...formData,
+        recaptcha: recaptchaToken,
+        codigoSolicitud: uuid,
+      };
 
       console.log("Datos enviados:", dataToSubmit);
 
       // Mostrar éxito
       setSubmitSuccess(true);
-
-      // Limpiar formulario después de 3 segundos
-      setTimeout(() => {
-        setFormData({
-          nombre: "",
-          documento: "",
-          correo: "",
-          recaptcha: "",
-        });
-        setSubmitSuccess(false);
-      }, 3000);
     } catch (error) {
       console.error("Error al enviar:", error);
       setErrors({ nombre: "Hubo un error al enviar el formulario" });
@@ -139,6 +164,7 @@ export default function OnboardingPage() {
     });
     setErrors({});
     setSubmitSuccess(false);
+    setRecaptchaChecked(false);
   };
 
   return (
@@ -180,8 +206,31 @@ export default function OnboardingPage() {
               <p className="text-gray-600 mb-4">
                 Tu intención de apertura ha sido registrada correctamente.
               </p>
+
+              {/* Código de solicitud UUID */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                <p className="text-sm text-gray-600 mb-1">Código de solicitud:</p>
+                <p className="text-lg font-mono font-bold text-blue-700 break-all">
+                  {codigoSolicitud}
+                </p>
+              </div>
+
+              <p className="text-sm text-gray-500 mb-4">
+                Guarda este código para dar seguimiento a tu solicitud.
+              </p>
+
               <button
-                onClick={() => setSubmitSuccess(false)}
+                onClick={() => {
+                  setSubmitSuccess(false);
+                  setCodigoSolicitud("");
+                  setRecaptchaChecked(false);
+                  setFormData({
+                    nombre: "",
+                    documento: "",
+                    correo: "",
+                    recaptcha: "",
+                  });
+                }}
                 className="text-blue-600 hover:text-blue-700 font-medium"
               >
                 Registrar otra solicitud
@@ -203,7 +252,7 @@ export default function OnboardingPage() {
                   value={formData.nombre}
                   onChange={(e) => handleInputChange("nombre", e.target.value)}
                   placeholder="Ej: Juan Pérez García"
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black ${
                     errors.nombre ? "border-red-500" : "border-gray-300"
                   }`}
                   disabled={isSubmitting}
@@ -217,7 +266,7 @@ export default function OnboardingPage() {
               <div>
                 <label
                   htmlFor="documento"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="block text-sm font-medium text-gray-700 mb-2 "
                 >
                   Número de Documento *
                 </label>
@@ -227,7 +276,7 @@ export default function OnboardingPage() {
                   value={formData.documento}
                   onChange={(e) => handleInputChange("documento", e.target.value)}
                   placeholder="Ej: 1234567890"
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black ${
                     errors.documento ? "border-red-500" : "border-gray-300"
                   }`}
                   disabled={isSubmitting}
@@ -251,7 +300,7 @@ export default function OnboardingPage() {
                   value={formData.correo}
                   onChange={(e) => handleInputChange("correo", e.target.value)}
                   placeholder="Ej: correo@ejemplo.com"
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black ${
                     errors.correo ? "border-red-500" : "border-gray-300"
                   }`}
                   disabled={isSubmitting}
@@ -268,13 +317,57 @@ export default function OnboardingPage() {
                 value={formData.recaptcha}
               />
 
-              {/* Indicador visual de reCAPTCHA */}
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                <div className="flex items-center space-x-3">
-                  <div className="shrink-0">
-                    <div className="h-6 w-6 border-2 border-gray-300 rounded bg-white flex items-center justify-center">
+              {/* Indicador visual de reCAPTCHA interactivo */}
+              <div>
+                <div
+                  className={`bg-gray-50 border rounded-lg p-4 cursor-pointer transition-colors hover:bg-gray-100 ${
+                    errors.recaptcha ? "border-red-500" : "border-gray-200"
+                  }`}
+                  onClick={() => {
+                    setRecaptchaChecked(!recaptchaChecked);
+                    if (errors.recaptcha) {
+                      setErrors((prev) => ({ ...prev, recaptcha: undefined }));
+                    }
+                  }}
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className="shrink-0">
+                      <div className={`h-6 w-6 border-2 rounded bg-white flex items-center justify-center transition-colors ${
+                        recaptchaChecked ? "border-green-500 bg-green-50" : "border-gray-300"
+                      }`}>
+                        {recaptchaChecked && (
+                          <svg
+                            className="h-4 w-4 text-green-600"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm text-gray-700">No soy un robot</p>
+                    </div>
+                    <div className="shrink-0">
+                      <div className="text-xs text-gray-400">
+                        <div>reCAPTCHA</div>
+                        <div className="text-right">simulado</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {errors.recaptcha && (
+                  <div className="mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                    <div className="flex items-center">
                       <svg
-                        className="h-4 w-4 text-green-600"
+                        className="h-5 w-5 text-red-600 mr-2"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -283,21 +376,15 @@ export default function OnboardingPage() {
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           strokeWidth={2}
-                          d="M5 13l4 4L19 7"
+                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
                         />
                       </svg>
+                      <p className="text-sm text-red-600 font-medium">
+                        {errors.recaptcha}
+                      </p>
                     </div>
                   </div>
-                  <div className="flex-1">
-                    <p className="text-sm text-gray-700">No soy un robot</p>
-                  </div>
-                  <div className="shrink-0">
-                    <div className="text-xs text-gray-400">
-                      <div>reCAPTCHA</div>
-                      <div className="text-right">simulado</div>
-                    </div>
-                  </div>
-                </div>
+                )}
               </div>
 
               {/* Botones */}

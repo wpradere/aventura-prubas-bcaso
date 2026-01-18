@@ -2,7 +2,7 @@ import SimulatorForm from "@/components/SimulatorForm";
 
 export default function SimulatorPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         {/* Encabezado */}
         <div className="mb-8 text-center">
@@ -12,12 +12,9 @@ export default function SimulatorPage() {
           <p className="text-gray-600 text-lg">
             Calcula cuánto puedes ahorrar con aportes mensuales e interés compuesto
           </p>
-        </div>
-
-        {/* Componente del formulario */}
+        </div>        
         <SimulatorForm />
-
-        {/* Información sobre el cálculo */}
+        
         <div className="mt-8 bg-white rounded-lg shadow-md p-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">
             ¿Cómo calculamos tu rentabilidad?
